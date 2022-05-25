@@ -20,7 +20,7 @@ many new commands soon
 - The console will ask you this:
 "Please enter a valid authorization code"
 
-- You can find a valid authorization code a> href="https://rebrand.ly/authcode">Here</a> == $0
+- You can find a valid authorization code [here](https://rebrandily.)
 
 - paste your code and enjoy the bot
 
@@ -42,7 +42,7 @@ More soon
 
 - !ready (makes the bot ready up)
 
-- !sitout (makes tthe bot sitout)
+- !sitout (makes the bot sitout)
 
 - !unready (the bot will "put" not ready)
 
