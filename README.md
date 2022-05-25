@@ -44,7 +44,7 @@ More soon
 
 - !sitout (makes the bot sitout)
 
-- !unready (the bot will "put" not ready)
+- !unready (makes the bot uready)
 
 - !random (the bot will equip randomly skin,emote,backpack and the pickaxe)
 
