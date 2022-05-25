@@ -20,7 +20,7 @@ many new commands soon
 - The console will ask you this:
 "Please enter a valid authorization code"
 
-- You can find a valid authorization code [here]([https://rebrandily.](https://rebrand.ly/authcode))
+- You can find a valid authorization code [here](https://rebrand.ly/authcode)
 
 - paste your code and enjoy the bot
 
