@@ -312,21 +312,21 @@ async def event_friend_message(message):
             await message.reply("You don't have access to this command.")
         else:
             await client.party.me.set_ready(fortnitepy.ReadyState.READY)
-            await message.reply('Now Ready!')
+            await message.reply('Ready.')
 
     if ("!unready" in args[0].lower()) or ("!sitin" in args[0].lower()):
         if message.author.display_name in data['BlockList']:
             await message.reply("You don't have access to this command.")
         else:
             await client.party.me.set_ready(fortnitepy.ReadyState.NOT_READY)
-            await message.reply('Now Unready!')
+            await message.reply('Unready.')
 
     if "!sitout" in args[0].lower():
         if message.author.display_name in data['BlockList']:
             await message.reply("You don't have access to this command.")
         else:
             await client.party.me.set_ready(fortnitepy.ReadyState.SITTING_OUT)
-            await message.reply('Now Sitting Out!')
+            await message.reply('Sitting Out.')
     
     if "!bp" in args[0].lower():
         if message.author.display_name in data['BlockList']:
