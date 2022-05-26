@@ -33,7 +33,7 @@ except ModuleNotFoundError:
     exit()
 
 print(f'  ')
-print(color.BLUE + f' New logo soon')
+print(color.BLUE + f' Needs a better logo')
 print(f'  ')
 
 def debugOn():
@@ -312,21 +312,21 @@ async def event_friend_message(message):
             await message.reply("You don't have access to this command.")
         else:
             await client.party.me.set_ready(fortnitepy.ReadyState.READY)
-            await message.reply('Ready.')
+            await message.reply('Now Ready!')
 
     if ("!unready" in args[0].lower()) or ("!sitin" in args[0].lower()):
         if message.author.display_name in data['BlockList']:
             await message.reply("You don't have access to this command.")
         else:
             await client.party.me.set_ready(fortnitepy.ReadyState.NOT_READY)
-            await message.reply('Unready.')
+            await message.reply('Now Unready!')
 
     if "!sitout" in args[0].lower():
         if message.author.display_name in data['BlockList']:
             await message.reply("You don't have access to this command.")
         else:
             await client.party.me.set_ready(fortnitepy.ReadyState.SITTING_OUT)
-            await message.reply('Sitting Out.')
+            await message.reply('Now Sitting Out!')
     
     if "!bp" in args[0].lower():
         if message.author.display_name in data['BlockList']:
@@ -350,6 +350,180 @@ async def event_friend_message(message):
         else:
             if message.author.display_name not in data['FullAccess']:
                 await message.reply(f"You don't have access to this command.")
+
+    if "!point" in args[0].lower():
+        if message.author.display_name in data['BlockList']:
+            await message.reply("You don't have access to this command.")
+        else:
+            await client.party.me.clear_emote()
+            if len(args) == 1:
+                await client.party.me.set_emote(asset="/Game/Athena/Items/Cosmetics/Dances/EID_IceKing.EID_IceKing")
+                await message.reply('Doing emote: Point It Out')
+            else:
+                if len(args) == 2:
+                    if args[1].lower() == 'random':
+                        pickaxes = await BenBotAsync.get_cosmetics(
+                        lang="en",
+                        searchLang="en",
+                        backendType="AthenaPickaxe"
+                        )
+                        pickaxe = random.choice(pickaxes)
+
+                        await client.party.me.set_pickaxe(
+                            asset=pickaxe.id
+                        )
+
+                        await client.party.me.clear_emote()
+                        await client.party.me.set_emote(asset="/Game/Athena/Items/Cosmetics/Dances/EID_IceKing.EID_IceKing")
+
+                        await message.reply(f"Pointing with: {pickaxe.name}")
+                    else:
+                        try:
+                            cosmetic = await BenBotAsync.get_cosmetic(
+                                lang="en",
+                                searchLang="en",
+                                matchMethod="contains",
+                                name=joinedArguments,
+                                backendType="AthenaPickaxe"
+                            )
+                            await client.party.me.set_pickaxe(asset=cosmetic.id)
+                            await client.party.me.clear_emote()
+                            await client.party.me.set_emote(asset="/Game/Athena/Items/Cosmetics/Dances/EID_IceKing.EID_IceKing")
+                            await message.reply('Pointing with: ' + f'{cosmetic.name}')
+                        except BenBotAsync.exceptions.NotFound:
+                            await message.reply(f'Could not find a pickaxe named: {joinedArguments}')
+
+    if "!banner" in args[0].lower():
+        if message.author.display_name in data['BlockList']:
+            await message.reply("You don't have access to this command.")
+        else:
+            if len(args) == 1:
+                await message.reply('You need to specify which banner, color & level you want to set the banner as.')
+            if len(args) == 2:
+                await client.party.me.set_banner(icon=args[1], color=data['banner_color'], season_level=data['level'])
+            if len(args) == 3:
+                await client.party.me.set_banner(icon=args[1], color=args[2], season_level=data['level'])
+            if len(args) == 4:
+                await client.party.me.set_banner(icon=args[1], color=args[2], season_level=args[3])
+
+            await message.reply(f'Banner set to; {args[1]} {args[2]} {args[3]}')
+            print(f" [BOT] [{getTime()}] Banner set to; {args[1]} {args[2]} {args[3]}")
+
+    if "!send" in args[0].lower():
+        if message.author.display_name in data['FullAccess']:
+            await client.party.send(joinedArguments)
+            print(f' [BOT] [{getTime()}] ' + color.GREEN + 'Sent Message:' + color.END + f' {joinedArguments}')
+        else:
+            if message.author.display_name not in data['FullAccess']:
+                await message.reply(f"You don't have access to this command.")
+
+    if "!join" in args[0] and message.author.display_name in data['FullAccess']:
+        if len(args) != 1:
+            user = await client.fetch_profile(joinedArguments)
+            friend = client.get_friend(user.id)
+        if len(args) == 1:
+            user = await client.fetch_profile(message.author.id, cache=False, raw=False)
+            friend = client.get_friend(user.id)
+        if friend is None:
+            await message.reply(f"Unable to invite that user, are you sure the bot has them added?")
+            print(Fore.RED + f" [BOT] [{getTime()}] [ERROR] Unable to join user: {joinedArguments}, are you sure the bot has them added?" + Fore.WHITE)
+        if message.author.display_name not in data['FullAccess']:
+            await message.reply(f"You don't have access to this command.")
+        else:
+            try:
+                await friend.join_party()
+                await message.reply(f"Joining {friend.display_name}'s party.")
+            except Exception as e:
+                await message.reply(f"Can not join user's party.")
+
+    if "!admin" in args[0].lower():
+        if message.author.display_name in data['FullAccess']:
+            if len(args) == 1:
+                await message.reply('Please specify if you want to add or remove a user from the admin list')
+                print(f' [BOT] [{getTime()}] Please specify if you want to add or remove a user from the admin list, using ' + color.GREEN + '!admin add ' + color.END + 'or ' + color.GREEN + '!admin remove' + color.END)
+            if len(args) == 2:
+                if args[1].lower() == 'add':
+                    await message.reply('You are already an admin')
+                elif args[1].lower() == 'remove':
+                    await message.reply('Are you sure you want to be removed as an admin?')
+                    res = await client.wait_for('friend_message')
+                    content = res.content.lower()
+                    user = await client.fetch_profile(message.author.id, cache=False, raw=False)
+                    if content == "yes":
+                        data['FullAccess'].remove(user.display_name)
+                        with open('config.json', 'w') as f:
+                            json.dump(data, f, indent=4)
+                            print(f" [BOT] [{getTime()}] Removed " + color.GREEN + f"{user.display_name}" + color.END + " as an admin")
+                            await message.reply(f"You were removed as an admin.")
+                    elif content == "no":
+                            await message.reply(f"You were kept as an admin.")
+                    else:
+                        await message.reply(f'Not a correct response, try "yes" or "no"')
+                else:
+                    await message.reply('Invalid usage, try !admin add <username> or !admin remove <username>')
+            if len(args) >= 3:
+                joinedArgumentsAdmin = " ".join(args[2:])
+                user = await client.fetch_profile(joinedArgumentsAdmin)
+                try:
+                    if args[1].lower() == 'add':
+                        if user.display_name not in data['FullAccess']:
+                            data['FullAccess'].append(f"{user.display_name}")
+                            with open('config.json', 'w') as f:
+                                json.dump(data, f, indent=4)
+                                print(f" [BOT] [{getTime()}] Added " + color.GREEN + f"{user.display_name}" + color.END + " as an admin")
+                                await message.reply(f"Added {user.display_name} as an admin.")
+                        elif user.display_name in data['FullAccess']:               
+                            print(f" [BOT] [{getTime()}]" + color.GREEN + f" {user.display_name}" + color.END + " is already an admin")
+                            await message.reply(f"{user.display_name} is already an admin.")
+                    elif args[1].lower() == 'remove':
+                        if user.display_name in data['FullAccess']:
+                            data['FullAccess'].remove(user.display_name)
+                            with open('config.json', 'w') as f:
+                                json.dump(data, f, indent=4)
+                                print(f" [BOT] [{getTime()}] Removed " + color.GREEN + f"{user.display_name}" + color.END + " as an admin")
+                                await message.reply(f"Removed {user.display_name} as an admin.")
+                        elif user.display_name not in data['FullAccess']:
+                            print(f" [BOT] [{getTime()}]" + color.GREEN + f" {user.display_name}" + color.END + " is not an admin")
+                            await message.reply(f"{user.display_name} is not an admin.")
+                except AttributeError:
+                    pass
+                    print(f" [BOT] [{getTime()}] Can't find user: " + color.GREEN + f"{joinedArgumentsAdmin}" + color.END)
+                    await message.reply(f"I couldn't find an Epic account with the name: {joinedArgumentsAdmin}.")
+        if message.author.display_name not in data['FullAccess']:
+            if len(args) >= 3 and args[1].lower() == 'add':
+                await message.reply(f"Password?")
+                res = await client.wait_for('friend_message')
+                content = res.content.lower()
+                joinedArgumentsAdmin = " ".join(args[2:])
+                user = await client.fetch_profile(joinedArgumentsAdmin)
+                if content in data['AdminPassword']:
+                    if user.display_name not in data['FullAccess']:
+                        data['FullAccess'].append(f"{user.display_name}")
+                        with open('config.json', 'w') as f:
+                            json.dump(data, f, indent=4)
+                            await message.reply(f"Correct. Added {user.display_name} as an admin.")
+                            print(f" [BOT] [{getTime()}] Added " + color.GREEN + f"{user.display_name}" + color.END + " as an admin")
+                    elif user.display_name in data['FullAccess']:
+                        print(f" [BOT] [{getTime()}]" + color.GREEN + f" {user.display_name}" + color.END + " is already an admin")
+                        await message.reply(f"{user.display_name} is already an admin.")
+                else:
+                    await message.reply(f"Incorrect Password")
+            elif len(args) == 2 and args[1].lower() == 'add':
+                await message.reply('Password?')
+                res = await client.wait_for('friend_message')
+                content = res.content.lower()
+                user = await client.fetch_profile(message.author.id, cache=False, raw=False)
+                if content in data['AdminPassword']:
+                    data['FullAccess'].append(f"{user.display_name}")
+                    with open('config.json', 'w') as f:
+                        json.dump(data, f, indent=4)
+                        await message.reply(f"Correct! You were added as an admin.")
+                        print(f" [BOT] [{getTime()}] Added " + color.GREEN + f"{user.display_name}" + color.END + " as an admin")
+                else:
+                    await message.reply(f"Incorrect Password")
+            else:
+                await message.reply(f"You don't have access to this command.")
+
 
 try:
     client.run()
