@@ -40,6 +40,8 @@ More soon
 
 - !bp (the bot will change the battlepass level)
 
+- !banner (the bot will change the banner)
+
 - !ready (makes the bot ready up)
 
 - !sitout (makes the bot sitout)
@@ -48,4 +50,14 @@ More soon
 
 - !random (the bot will equip randomly skin,emote,backpack and the pickaxe)
 
+- !point (the bot will do the point it put emote)
+
 - !level (the bot will change the level)
+
+## For Admins
+
+- !admin (gives you complete control of the bot, you can change the password in the config.json file)
+
+- !send (makes the bot send a message in the partychat)
+
+- !join (the bot will enter your lobby)
