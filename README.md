@@ -7,7 +7,9 @@ many new commands soon
 
 # How to use?
 
-- Create a new epic games account 
+- Create a new epic games [account](https://epicgames.com/)
+
+- Install [python](https://python.org/download)
 
 - Donwload the code
 
