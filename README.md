@@ -11,7 +11,7 @@ many new commands soon
 
 - Install [python](https://python.org/download)
 
-- Donwload the code
+- Download the code
 
 - Extract it to your desktop (or wherever you want)
 
