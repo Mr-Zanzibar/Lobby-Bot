@@ -158,7 +158,7 @@ async def event_friend_request(request):
 @client.event
 async def event_party_member_join(member):
     if client.user.display_name != member.display_name:
-        print(f" [BOT] [{getTime()}] {member.display_name} joined the lobby.")
+        print(f" [BOT] [{getTime()}] {member.display_name} joined.")
 
 @client.event
 async def event_friend_message(message):
