@@ -1,3 +1,7 @@
+# outdated
+
+But still usable
+
 # Lobby-Bot
 Fortnite Lobbybot
 
